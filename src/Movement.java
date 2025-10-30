@@ -15,12 +15,12 @@ public class Movement {
 
     /**
      * Mueve la posición del jugador según la tecla de dirección presionada
+     *
      * @param playerPos
      * @param direction
      * @param map
-     * @return true si el movimiento fue exitoso, false si hubo un obstáculo o dirección inválida.
      */
-    public static boolean movePlayer(Position playerPos, char direction, char[][] map){
+    public static void movePlayer(Position playerPos, char direction, char[][] map){
         int previousX = playerPos.getPosX();
         int previousY = playerPos.getPosY();
 
@@ -38,14 +38,12 @@ public class Movement {
                 playerPos.moveRight();
                 break;
             default:
-                System.out.println("Dirección no válida. Usa W, A, S, D para moverte.");return false;
+                System.out.println("Dirección no válida. Usa W, A, S, D para moverte.");return;
         }
         if (map[playerPos.getPosY()][playerPos.getPosX()] == '#'){
             System.out.println("No puedes moverte en esa dirección, hay un obstáculo.");
             playerPos.setPosX(previousX);
             playerPos.setPosY(previousY);
-            return false;
         }
-        return true;
     }
 }

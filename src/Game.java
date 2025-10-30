@@ -1,15 +1,31 @@
+import java.io.IOException;
+
 public class Game {
 
-    public static void printMap(Position player, char[][] map) {
-        for (int y = 0; y < map.length; y++) {
-            for (int x = 0; x < map[y].length; x++) {
-                if (x == player.getPosX() && y == player.getPosY())
-                    System.out.print("¡");
-                else
-                    System.out.print(map[y][x]);
-            }
-            System.out.println();
-        }
+    /**
+     * Imprime el mapa con la posición del jugador
+     * @param player position
+     * @param map char[][]
+     */
+
+    public static void printMap(GameMap draw, char[][] map){
+        draw.drawMap(map);
     }
 
+    /**
+     * Limpia la consola para cualquier sistema operativo
+     */
+    public static void clearConsole(){
+        try {
+            if (System.getProperty("os.name").contains("Windows")) {
+                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+            } else {
+                System.out.print("\033[H\033[2J");
+                new ProcessBuilder("clear").inheritIO().start().waitFor();
+            }
+
+        } catch (IOException | InterruptedException ex) {
+            System.out.println("Error al limpiar la consola: " + ex.getMessage());
+        }
+    }
 }
