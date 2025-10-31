@@ -3,8 +3,9 @@ public class GameObject {
     private Position position;
     private char symbolToDraw;
 
-    public GameObject(Position position) {
+    public GameObject(Position position, char symbolToDraw) {
         this.position = position;
+        this.symbolToDraw = symbolToDraw;
     }
 
     public Position getPosition() {

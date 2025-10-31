@@ -6,7 +6,7 @@ import java.io.IOException;
 public class Main {
     static char[][] Map = {
             "####################".toCharArray(),
-            "#        #         #".toCharArray(),
+            "#         #         #".toCharArray(),
             "#  ####  #  ###### #".toCharArray(),
             "#        #         #".toCharArray(),
             "######  #########  #".toCharArray(),

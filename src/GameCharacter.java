@@ -7,7 +7,7 @@ public class GameCharacter extends GameObject {
 
 
     public GameCharacter(int health, int damage, String favoriteMov, Position position, char symbol){
-        super(position);
+        super(position,symbol);
         this.health = health;
         this.damage = damage;
         this.favoriteMov = favoriteMov;
