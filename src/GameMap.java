@@ -25,16 +25,15 @@ public class GameMap {
     public void drawMap(char[][] map){
         for (int y = 0; y < map.length; ++y){
             for (int x = 0; x < map[y].length; ++x){
-                boolean draw = false;
+                boolean isObjectHere = false;
                 for (GameObject obj: gameObjects){
                     if ( x == obj.getPosition().getPosX() && y == obj.getPosition().getPosY() ){
                         System.out.print(obj.getSymbol());
-                        draw = true;
+                        isObjectHere = true;
                         break;//Este break es para el for de GameObject para que siga con el recorrido del mapa
                     }
-                    else
-                        System.out.print(map[y][x]);
                 }
+                if (!isObjectHere) System.out.print(map[y][x]);
             }
             System.out.println();
         }
