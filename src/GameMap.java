@@ -4,15 +4,15 @@ import java.util.List;
 public class GameMap {
 
 
-    public final List<GameObject> gameObjects;
+    private final List<GameObject> gameObjects;
 
     public GameMap(char[][] map) {
         this.gameObjects = new ArrayList<>();
+
     }
 
     /**
      * Con este método podemos añadir objetos a la lista
-     * @param obj
      */
     public void addObject(GameObject obj){
         gameObjects.add(obj);
@@ -38,6 +38,18 @@ public class GameMap {
             System.out.println();
         }
 
+    }
+
+    public void isSomeoneHere(Player player){
+        for (GameObject obj: gameObjects){
+            if (obj instanceof Villain v){
+                if (player.getPosition().getPosX() == v.getPosition().getPosX() &&
+                    player.getPosition().getPosY() == v.getPosition().getPosY()){
+                    System.out.println("Te ha encontrado a un enemigo de nivel:"+v.getLevel());
+                    Game.renderBattle(player, v);
+                }
+            }
+        }
     }
 
 }
