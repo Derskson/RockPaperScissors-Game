@@ -5,9 +5,9 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class Game {
 
-    static final int PIEDRA = 1;
-    static final int PAPEL = 2;
-    static final int TIJERA = 3;
+    public static final int PIEDRA = 1;
+    public static final int PAPEL = 2;
+    public static final int TIJERA = 3;
 
 
     public static void printMap(GameMap draw, char[][] map){
@@ -48,14 +48,15 @@ public class Game {
         }
     }
 
-    public static void renderLife(int lifePlayer, int lifeVillain){
-        int initialLifePlayer = lifePlayer;
-        int initialLifeVillain = lifeVillain;
+    public static void renderLife(Player player, int lifeVillain){
+        int lifePlayer = player.getHealth();
         int barSize = 20;
-        int lifeBarPlayer = (lifePlayer*barSize/initialLifePlayer);
-        int lifeBarVillain = (lifeVillain*barSize/initialLifeVillain);
-        String BarPlayer = "⣿".repeat(lifePlayer)+"-".repeat(barSize*initialLifePlayer);
-        String BarVillain = "⣿".repeat(lifeVillain)+"-".repeat(barSize*initialLifeVillain);
+
+
+        int lifeBarPlayer = (int) ((lifePlayer/player.getHealth())*barSize);
+        int lifeBarVillain = (int) ((lifeVillain/100)*barSize);
+        String BarPlayer = "⣿".repeat(lifePlayer)+"-".repeat(barSize-lifeBarPlayer);
+        String BarVillain = "⣿".repeat(lifeVillain)+"-".repeat(barSize-lifeBarVillain);
 
         System.out.println("Jugador: ["+BarPlayer+"] "+ lifePlayer +" HP");
         System.out.println("Villano: ["+BarVillain+"] "+lifeVillain+" HP");
@@ -86,7 +87,7 @@ public class Game {
         Scanner sc = new Scanner(System.in);
         int lifePlayer = player.getHealth();
         int lifeVillain = villain.getHealth();
-        renderLife(lifePlayer,lifeVillain);
+        renderLife(player,lifeVillain);
         while(lifePlayer>0 || lifeVillain>0){
             System.out.println("""
                 Selecciona un movimiento
@@ -106,7 +107,7 @@ public class Game {
                 lifeVillain-=player.getDamage();
             }
             else lifePlayer-=villain.getDamage();
-            renderLife(lifePlayer,lifeVillain);
+            renderLife(player,lifeVillain);
 
         }
     }

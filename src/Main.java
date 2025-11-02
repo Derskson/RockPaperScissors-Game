@@ -20,7 +20,7 @@ public class Main {
     public static void main(String[] args) throws IOException {
         GameMap map = new GameMap(Map);
         Scanner sc = new Scanner(System.in);
-        Player jugador = new Player(100,10,null, 0.0f, new Position(1,1), '¡');
+        Player jugador = new Player(150,10,null, 0.0f, new Position(1,1), '¡');
         map.addObject(jugador);
         Villain subdito1 = new Villain(100,10,"Tijera", new Position(2,2), '1', 1);
         map.addObject(subdito1);
