@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.io.PrintStream;
 import java.util.Scanner;
 import java.util.Timer;
 import java.util.concurrent.ThreadLocalRandom;
@@ -48,20 +49,19 @@ public class Game {
         }
     }
 
-    public static void renderLife(Player player, int lifeVillain){
-        int lifePlayer = player.getHealth();
+    public static void renderLife(int lifePlayer, Player player, int lifeVillain, Villain villain) {
         int barSize = 20;
 
+        int lifeBarPlayer = (lifePlayer * barSize/player.getHealth());
+        int lifeBarVillain = (lifeVillain * barSize/villain.getHealth());
 
-        int lifeBarPlayer = (int) ((player.getHealth()/100)*barSize);
-        int lifeBarVillain = (int) ((lifeVillain/100)*barSize);
+        if (lifeBarVillain <= 0) lifeBarVillain = 0;
+        if (lifeBarPlayer <= 0) lifeBarPlayer = 0;
 
-        String BarPlayer = "⣿".repeat(Math.max(0, lifeBarPlayer))+"-".repeat(Math.max(0, barSize - lifeBarPlayer));
-        String BarVillain = "⣿".repeat(lifeVillain)+"-".repeat(barSize-lifeBarVillain);
-
-        System.out.println("Jugador: ["+BarPlayer+"] "+ player.getHealth() + " HP");
-        System.out.println("Villano: ["+BarVillain+"] "+lifeVillain+" HP");
-
+        String BarPlayer = "⣿".repeat(lifeBarPlayer)+"-".repeat(barSize-lifeBarPlayer);
+        String BarVillain = "⣿".repeat(lifeBarVillain)+"-".repeat(barSize-lifeBarVillain);
+        System.out.println("Jugador: "+BarPlayer+" "+lifePlayer +'/'+player.getHealth());
+        System.out.println("Villano: "+BarVillain+" "+lifeVillain+'/'+villain.getHealth());
     }
 
     public static int aleatoryMov(){
@@ -94,7 +94,7 @@ public class Game {
         Scanner sc = new Scanner(System.in);
         int lifePlayer = player.getHealth();
         int lifeVillain = villain.getHealth();
-        renderLife(player,lifeVillain);
+        renderLife(lifePlayer, player, lifeVillain, villain);
         while(lifePlayer>0 || lifeVillain>0){
             System.out.println("""
                 Selecciona un movimiento
@@ -113,9 +113,9 @@ public class Game {
             if(result==1){
                 lifeVillain-=player.getDamage();
             }
-            else player.setHealth(lifePlayer-villain.getDamage());
-            renderLife(player,lifeVillain);
+            else if(result==-1) lifePlayer-=villain.getDamage();
 
+            renderLife(lifePlayer, player, lifeVillain, villain);
         }
     }
 }
