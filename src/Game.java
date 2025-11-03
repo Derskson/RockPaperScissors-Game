@@ -1,7 +1,5 @@
 import java.io.IOException;
-import java.io.PrintStream;
 import java.util.Scanner;
-import java.util.Timer;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Game {
@@ -84,18 +82,24 @@ public class Game {
 
     }
 
-    public void rewardPlayer(Player player, Villain villain){
+    public static void rewardPlayer(Player player, Villain villain){
         float reward = villain.getLevel()*20;// Dependiendo el nivel del villano así mismo ganará monedas
         player.setMoney(player.getMoney()+reward);
         System.out.println("Has ganado: "+player.getMoney()+" monedas!");
     }
 
+    static boolean checkLife(int life) {
+        return life <= 0;
+    }
+
     public static void renderBattle(Player player, Villain villain){
         Scanner sc = new Scanner(System.in);
+
         int lifePlayer = player.getHealth();
         int lifeVillain = villain.getHealth();
         renderLife(lifePlayer, player, lifeVillain, villain);
-        while(lifePlayer>0 || lifeVillain>0){
+
+        while(!checkLife(lifePlayer) && !checkLife(lifeVillain)){
             System.out.println("""
                 Selecciona un movimiento
                 
@@ -103,19 +107,50 @@ public class Game {
                 [2]:Papel
                 [3]:Tijeras
                 """);
-            int movPlayer = sc.nextInt();
-            int movVillain = aleatoryMov();
-            System.out.println("Tu contrincante saca: "+
-                    (movVillain==PIEDRA ? "Piedra" :
-                        movVillain==PAPEL ? "Papel" :
-                        "Tijeras"));
-            int result = RockPaperScissors(movPlayer, movVillain);
-            if(result==1){
-                lifeVillain-=player.getDamage();
+            int choice = sc.nextInt();
+            int choiceVillain = aleatoryMov();
+
+            String movPlayer = switch (choice){
+                case PIEDRA -> "Piedra";
+                case PAPEL -> "Papel";
+                case TIJERA -> "Tijeras";
+                default -> "Piedra";
+            };
+            String movVillain = switch (choiceVillain){
+                case PIEDRA -> "Piedra";
+                case PAPEL -> "Papel";
+                case TIJERA -> "Tijeras";
+                default -> "Piedra";
+            };
+
+            System.out.println("Tu contrincante saca: " + movVillain);
+            int result = RockPaperScissors(choice, choiceVillain);
+
+            if (result == 1) {
+                int dmg = movPlayer.equals(player.getFavoriteMov()) ? player.getDamage() * 2 : player.getDamage();
+                System.out.println("¡Golpeas con fuerza y haces " + dmg + " de daño!");
+                lifeVillain -= dmg;
+
+                if (checkLife(lifeVillain)) {
+                    System.out.println("¡Has derrotado al villano!");
+                    rewardPlayer(player, villain);
+                    break;
+                }
+            } else if (result == -1) {
+                int dmg = movVillain.equals(villain.getFavoriteMov()) ? villain.getDamage() * 2 : villain.getDamage();
+                System.out.println("El villano contraataca e inflige " + dmg + " de daño!");
+                lifePlayer -= dmg;
+
+                if (checkLife(lifePlayer)) {
+                    System.out.println("Has sido derrotado...");
+                    break;
+                }
+            } else {
+                System.out.println("Ambos esquivan el ataque.");
             }
-            else if(result==-1) lifePlayer-=villain.getDamage();
 
             renderLife(lifePlayer, player, lifeVillain, villain);
         }
+
     }
 }

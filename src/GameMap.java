@@ -46,6 +46,7 @@ public class GameMap {
                 if (player.getPosition().getPosX() == v.getPosition().getPosX() &&
                     player.getPosition().getPosY() == v.getPosition().getPosY()){
                     System.out.println("Te ha encontrado a un enemigo de nivel:"+v.getLevel());
+                    System.out.println("¡Cuidado! Tiene "+v.getFavoriteMov()+" como movimiento favorito");
                     Game.renderBattle(player, v);
                 }
             }

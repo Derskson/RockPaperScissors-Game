@@ -22,9 +22,9 @@ public class Main {
         Scanner sc = new Scanner(System.in);
         Player jugador = new Player(150,10,null, 0.0f, new Position(1,1), '¡');
         map.addObject(jugador);
-        Villain subdito1 = new Villain(100,10,"Tijera", new Position(2,2), '1', 1);
+        Villain subdito1 = new Villain(100,10,"Tijeras", new Position(2,2), '1', 1);
         map.addObject(subdito1);
-        Villain peleador2 = new Villain(200, 15, "Papel", new Position(3, 4),'2', 2);
+        Villain peleador2 = new Villain(200, 15, "Papel", new Position(6, 5),'2', 2);
         map.addObject(peleador2);
         Villain jefe3 = new Villain(300, 30,"Piedra", new Position(7,7), '3', 3);
         map.addObject(jefe3);
