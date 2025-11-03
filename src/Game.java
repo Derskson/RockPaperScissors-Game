@@ -53,12 +53,13 @@ public class Game {
         int barSize = 20;
 
 
-        int lifeBarPlayer = (int) ((lifePlayer/player.getHealth())*barSize);
+        int lifeBarPlayer = (int) ((player.getHealth()/100)*barSize);
         int lifeBarVillain = (int) ((lifeVillain/100)*barSize);
-        String BarPlayer = "⣿".repeat(lifePlayer)+"-".repeat(barSize-lifeBarPlayer);
+
+        String BarPlayer = "⣿".repeat(Math.max(0, lifeBarPlayer))+"-".repeat(Math.max(0, barSize - lifeBarPlayer));
         String BarVillain = "⣿".repeat(lifeVillain)+"-".repeat(barSize-lifeBarVillain);
 
-        System.out.println("Jugador: ["+BarPlayer+"] "+ lifePlayer +" HP");
+        System.out.println("Jugador: ["+BarPlayer+"] "+ player.getHealth() + " HP");
         System.out.println("Villano: ["+BarVillain+"] "+lifeVillain+" HP");
 
     }
@@ -81,6 +82,12 @@ public class Game {
         }
         else System.out.println("¡Que mal! tu contrincante gana este Turno");return -1;
 
+    }
+
+    public void rewardPlayer(Player player, Villain villain){
+        float reward = villain.getLevel()*20;// Dependiendo el nivel del villano así mismo ganará monedas
+        player.setMoney(player.getMoney()+reward);
+        System.out.println("Has ganado: "+player.getMoney()+" monedas!");
     }
 
     public static void renderBattle(Player player, Villain villain){
@@ -106,7 +113,7 @@ public class Game {
             if(result==1){
                 lifeVillain-=player.getDamage();
             }
-            else lifePlayer-=villain.getDamage();
+            else player.setHealth(lifePlayer-villain.getDamage());
             renderLife(player,lifeVillain);
 
         }
